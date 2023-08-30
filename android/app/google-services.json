@@ -1,0 +1,154 @@
+{
+  "project_info": {
+    "project_number": "59704294952",
+    "project_id": "authentication-127d9",
+    "storage_bucket": "authentication-127d9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59704294952:android:1410a25d38330092b2ff1d",
+        "android_client_info": {
+          "package_name": "com.example.assignment_1new"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "59704294952-o9uk2erdbdfbbrdqg7k632gtki6m1rmm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiBYrZmvXYhlrpGJKDEZRTx29hkih7I1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "59704294952-o9uk2erdbdfbbrdqg7k632gtki6m1rmm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "59704294952-beh13ulqpgatjakulhis18g9v0e7pdsk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ietpentathon"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59704294952:android:8211f8b9a61bf406b2ff1d",
+        "android_client_info": {
+          "package_name": "com.example.assignment_1temp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "59704294952-o9uk2erdbdfbbrdqg7k632gtki6m1rmm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiBYrZmvXYhlrpGJKDEZRTx29hkih7I1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "59704294952-o9uk2erdbdfbbrdqg7k632gtki6m1rmm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "59704294952-beh13ulqpgatjakulhis18g9v0e7pdsk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ietpentathon"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59704294952:android:a87981db4bd52290b2ff1d",
+        "android_client_info": {
+          "package_name": "com.example.ietpentathon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "59704294952-o9uk2erdbdfbbrdqg7k632gtki6m1rmm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiBYrZmvXYhlrpGJKDEZRTx29hkih7I1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "59704294952-o9uk2erdbdfbbrdqg7k632gtki6m1rmm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "59704294952-beh13ulqpgatjakulhis18g9v0e7pdsk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ietpentathon"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59704294952:android:df7d02cbfab4718bb2ff1d",
+        "android_client_info": {
+          "package_name": "com.example.newiet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "59704294952-o9uk2erdbdfbbrdqg7k632gtki6m1rmm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiBYrZmvXYhlrpGJKDEZRTx29hkih7I1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "59704294952-o9uk2erdbdfbbrdqg7k632gtki6m1rmm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "59704294952-beh13ulqpgatjakulhis18g9v0e7pdsk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ietpentathon"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
