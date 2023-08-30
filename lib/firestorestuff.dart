@@ -99,8 +99,6 @@ class FirestoreStory {
           // Save the downloaded file, you can save it to local storage or process it as needed.
           // In this example, we're just keeping track of the downloaded filenames.
           downloadedFiles.add(fileName);
-          final Reference storageRef = storage.ref().child('uploads/$fileName');
-          await storageRef.delete();
         }
 
         // Update contain_files with the downloaded filenames
@@ -159,6 +157,9 @@ class FirestoreStory {
   }
 
   downloadFile(String fileName, String email) async {
+    final Reference storageRef =
+        FirebaseStorage.instance.ref().child('uploads/$fileName');
+    await storageRef.delete();
     final res = await getValueForKeyInDocument(email, fileName);
     final index = await findStringIndexInArray(res, fileName);
     var downloadLink = "";
