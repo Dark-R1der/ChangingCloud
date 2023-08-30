@@ -31,6 +31,13 @@ class Auth {
         .collection('/users')
         .doc(email)
         .set({'role': role.toLowerCase()});
+
+    if (role == "Node") {
+      await _firebaseFirestore
+          .collection('/users')
+          .doc(email)
+          .update({'current_files': 0, 'max_file_limit': 10});
+    }
   }
 
   Future<void> signOut() async {
