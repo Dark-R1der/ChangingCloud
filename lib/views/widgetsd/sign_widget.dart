@@ -8,10 +8,7 @@ import 'package:newiet/views/ui/controller/sign_up_controller.dart';
 class SignUp extends StatefulWidget {
   const SignUp({
     super.key,
-    required this.textEditingController,
   });
-
-  final TextEditingController textEditingController;
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -22,12 +19,14 @@ class _SignUpState extends State<SignUp> {
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
-
+  final TextEditingController _controllerName = TextEditingController();
+  final SignUpController signUpController = Get.put(SignUpController());
   Future<void> createUserWithEmailAndPassword() async {
     try {
       await Auth().createUserWithEmailandPassword(
         email: _controllerEmail.text,
         password: _controllerPassword.text,
+        role: signUpController.dropdownValue.value,
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -38,7 +37,6 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    final SignUpController signUpController = Get.put(SignUpController());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -72,7 +70,7 @@ class _SignUpState extends State<SignUp> {
         ),
         TextField(
           style: const TextStyle(color: Colors.white),
-          controller: widget.textEditingController,
+          controller: _controllerName,
           decoration: InputDecoration(
             label: const Text("Name"),
             labelStyle: const TextStyle(color: Colors.grey),
@@ -124,7 +122,32 @@ class _SignUpState extends State<SignUp> {
           ),
         ),
         SizedBox(
-          height: 40.h,
+          height: 20.h,
+        ),
+        Obx(
+          () => DropdownButton<String>(
+            isExpanded: true,
+            value: signUpController.dropdownValue.value, // Selected value
+            onChanged: (String? newValue) {
+              signUpController.dropdownValue.value = newValue!;
+            },
+            items: <String>['Node', 'Organization']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    value,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+        SizedBox(
+          height: 10.h,
         ),
         GestureDetector(
           onTap: () {

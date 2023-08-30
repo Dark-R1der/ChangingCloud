@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:newiet/views/ui/animations/sign_up_bar_animation.dart';
 import 'package:newiet/views/ui/controller/sign_up_controller.dart';
@@ -14,8 +13,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SignUpController signUpController = Get.put(SignUpController());
-    TextEditingController _textEditingController = TextEditingController();
-    print("${signUpController.loginType.value}");
+    TextEditingController textEditingController = TextEditingController();
 
     // var space = Obx(() {
     //   return
@@ -58,12 +56,8 @@ class SignUpPage extends StatelessWidget {
                     child: Obx(() {
                       print("${signUpController.loginType.value} -----------");
                       return signUpController.loginType.value == "LoginIn"
-                          ? LoginIn(
-                              textEditingController: _textEditingController,
-                            )
-                          : SignUp(
-                              textEditingController: _textEditingController,
-                            );
+                          ? LoginIn()
+                          : SignUp();
                     })),
               );
             }),

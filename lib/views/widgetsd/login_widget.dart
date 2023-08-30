@@ -9,10 +9,7 @@ import '../../auth.dart';
 class LoginIn extends StatefulWidget {
   const LoginIn({
     super.key,
-    required this.textEditingController,
   });
-
-  final TextEditingController textEditingController;
 
   @override
   State<LoginIn> createState() => _LoginInState();
@@ -35,20 +32,6 @@ class _LoginInState extends State<LoginIn> {
       setState(() {
         errorMessage = e.message;
       });
-    }
-  }
-
-  Future<void> createUserWithEmailAndPassword() async {
-    try {
-      await Auth().createUserWithEmailandPassword(
-        email: _controllerEmail.text,
-        password: _controllerPassword.text,
-      );
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        errorMessage = e.message;
-      });
-      print(e.message);
     }
   }
 
