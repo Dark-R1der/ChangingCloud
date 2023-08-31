@@ -5,9 +5,15 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:get/get.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:http/http.dart' as http;
 
-class FirestoreStory {
+class FirestoreStory extends GetxController {
+  var filearray = [].obs;
   Future<List<String>> uploadFileToStorage(File file) async {
     final storageRef = firebase_storage.FirebaseStorage.instance.ref();
 
@@ -35,7 +41,7 @@ class FirestoreStory {
     // Query users whose current_files is less than max_file_limit
     final querySnapshot = await firestore
         .collection('users')
-        .where('current_files', isLessThan: 'max_file_limit')
+        .where('current_files', isLessThan: 3)
         .get();
 
     // Shuffle the documents to select dis random users
@@ -43,6 +49,7 @@ class FirestoreStory {
 
     for (int i = 0; i < dis; i++) {
       final userDoc = usersList[i];
+      fileName = fileName.split(".")[0];
       await firestore.collection('users').doc(userDoc.id).update({
         'requested_files.$fileName': downloadURL,
         'current_files': userDoc['current_files'] + 1,
@@ -75,7 +82,7 @@ class FirestoreStory {
         return;
       }
 
-      final requestFilesMap = userSnapshot.data()?['request_files'];
+      final requestFilesMap = userSnapshot.data()?['requested_files'];
 
       if (requestFilesMap != null && requestFilesMap.isNotEmpty) {
         final downloadedFiles = <String>[];
@@ -96,6 +103,9 @@ class FirestoreStory {
           final file = File(localFilePath);
           await file.writeAsBytes(fileData!.toList());
 
+          filearray.add(file);
+          OpenFile.open(localFilePath);
+
           // Save the downloaded file, you can save it to local storage or process it as needed.
           // In this example, we're just keeping track of the downloaded filenames.
           downloadedFiles.add(fileName);
@@ -104,7 +114,7 @@ class FirestoreStory {
         // Update contain_files with the downloaded filenames
         await userDoc.update({
           'contain_files': FieldValue.arrayUnion(downloadedFiles),
-          'request_files': {}, // Clear request_files
+          'requested_files': {}, // Clear request_files
         });
 
         print('Files downloaded and updated successfully.');
@@ -156,23 +166,31 @@ class FirestoreStory {
     return 0;
   }
 
-  downloadFile(String fileName, String email) async {
-    final Reference storageRef =
-        FirebaseStorage.instance.ref().child('uploads/$fileName');
-    await storageRef.delete();
-    final res = await getValueForKeyInDocument(email, fileName);
-    final index = await findStringIndexInArray(res, fileName);
-    var downloadLink = "";
-    // Upload File to Cloud Storage and get a download link and set t to downloadLink
-    final Reference ref = FirebaseStorage.instance.refFromURL(downloadLink);
-    final fileData = await ref.getData();
-
+  downloadFile(
+      {String fileName = "IMG-20230901-WA0001",
+      String email = "testtest@mail.com"}) async {
+    final Reference ref =
+        FirebaseStorage.instance.ref().child('uploads/$fileName.jpg');
+    final temp = await ref.getDownloadURL();
     // Get the local directory for saving the file
-    final appDocDirectory = await getApplicationDocumentsDirectory();
-    final localFilePath = '${appDocDirectory.path}/$fileName';
 
-    // Save the downloaded file to the local device
-    final file = File(localFilePath);
-    await file.writeAsBytes(fileData!.toList());
+    await Permission.manageExternalStorage.request();
+    final response = await http.get(Uri.parse(temp));
+    if (response.statusCode == 200) {
+      final directory = await getExternalStorageDirectory();
+      final parentDirectory = Directory('${directory!.path}/Downloads');
+      if (!parentDirectory.existsSync()) {
+        parentDirectory.createSync(recursive: true);
+      }
+      final filePath = '${directory!.path}/Downloads/$fileName.jpg';
+
+      final file = File(filePath);
+      await file.writeAsBytes(response.bodyBytes);
+
+      print('File downloaded to: $filePath');
+      OpenFile.open(filePath);
+    } else {
+      throw Exception('Failed to download file');
+    }
   }
 }
