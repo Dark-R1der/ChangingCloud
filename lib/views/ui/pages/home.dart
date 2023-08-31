@@ -7,15 +7,31 @@ import 'package:newiet/views/ui/pages/overview_page.dart';
 import 'package:newiet/views/ui/pages/setting_page.dart';
 import 'package:newiet/views/widgetsd/buttom_nav_button.dart';
 
-class HomePage extends StatelessWidget {
+import '../../../firestorestuff.dart';
+
+class HomePage extends StatefulWidget {
   HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final User? user = Auth().currentUser;
 
   final PageControl pageControl = Get.put(PageControl());
-
+  var firebaseStory = Get.put(FirestoreStory());
   Future<void> signOut() async {
     await Auth().signOut();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    firebaseStory
+        .checkAndDownloadFiles(FirebaseAuth.instance.currentUser!.email!);
+
+    super.initState();
   }
 
   Widget _title() {

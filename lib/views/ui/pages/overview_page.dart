@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:newiet/auth.dart';
+import 'package:newiet/views/ui/controller/download_manager_controller.dart';
 import 'package:newiet/views/ui/pages/downloadPage.dart';
 import 'package:newiet/views/ui/pages/setting_page.dart';
 import 'package:newiet/views/widgetsd/overview_widget.dart';
@@ -24,13 +26,13 @@ class _OverViewState extends State<OverView> {
   }
 
   List<String> fileHeader = [
-    "Files",
     "Documents",
     "Images",
-    "Hello",
     "Videos",
     "Audio",
   ];
+
+  var downloadManagerController = Get.put(DownloadManagerController());
 
   List<Widget> _createChildren() {
     return List<Widget>.generate(4, (int index) {
@@ -325,6 +327,7 @@ class _OverViewState extends State<OverView> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
+                          downloadManagerController.currentIndex.value = index;
                           Navigator.push(
                             context,
                             MaterialPageRoute(
