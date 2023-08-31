@@ -99,9 +99,9 @@ class DownloadManagerController extends GetxController {
     } else if (currentIndex.value == 1) {
       return imagesStuff;
     } else if (currentIndex.value == 2) {
-      return audioStuff;
-    } else {
       return videosStuff;
+    } else {
+      return audioStuff;
     }
   }
 }

@@ -29,16 +29,17 @@ class _OverViewState extends State<OverView> {
     return ElevatedButton(onPressed: signOut, child: const Text("SignOut"));
   }
 
+  @override
+  void initState() {
+    downloadManagerController.retrieveFromSharedPreferences();
+    super.initState();
+  }
+
   List<String> fileHeader = [
-    "Files",
     "Documents",
     "Images",
-    "Hello",
     "Videos",
     "Audio",
-    "Video",
-    "Image",
-    "Document",
   ];
   List<Color> _getGradientColors() {
     List<Color> colors = [];
