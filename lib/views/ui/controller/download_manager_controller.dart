@@ -24,6 +24,10 @@ class DownloadManagerController extends GetxController {
   var currentProject = "".obs;
 
   var projectNames = [].obs;
+  var projectLimit = [].obs;
+  var creationDates = [].obs;
+
+  var projectIndex = 0.obs;
 
   saveToSharedPreferences() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -37,9 +41,13 @@ class DownloadManagerController extends GetxController {
         audioStuff.map((dynamic item) => item.toString()).toList());
     await prefs.setStringList("$currentProject.indSizes",
         individualSizes.map((int item) => item.toString()).toList());
+    await prefs.setStringList("projectLimits",
+        projectLimit.map((dynamic item) => item.toString()).toList());
     await prefs.setInt('$currentProject.currentFiles', currentFiles.value);
     await prefs.setStringList('projectsList',
         projectNames.map((dynamic item) => item.toString()).toList());
+    await prefs.setStringList('creationDates',
+        creationDates.map((dynamic item) => item.toString()).toList());
     await prefs.setInt(
         '$currentProject.currentOccupied', currentOccupied.value);
   }
@@ -54,11 +62,18 @@ class DownloadManagerController extends GetxController {
     videosStuff.value = prefs.getStringList("$currentProject.videos") ?? [];
     audioStuff.value = prefs.getStringList("$currentProject.audio") ?? [];
     projectNames.value = prefs.getStringList("projectsList") ?? [];
+    creationDates.value = prefs.getStringList("creationDates") ?? [];
     individualSizes.value = prefs
             .getStringList("$currentProject.indSizes")
             ?.map((item) => int.parse(item))
             ?.toList() ??
         [0, 0, 0, 0];
+
+    projectLimit.value = prefs
+            .getStringList("projectLimits")
+            ?.map((item) => int.parse(item))
+            ?.toList() ??
+        [];
 
     // Retrieve the integers
     currentFiles.value = prefs.getInt('$currentProject.currentFiles') ?? 0;
@@ -66,10 +81,16 @@ class DownloadManagerController extends GetxController {
         prefs.getInt('$currentProject.currentOccupied') ?? 0;
   }
 
-  changeProject(String name) async {
+  changeProject(int index) async {
     await saveToSharedPreferences();
-    currentProject.value = name;
+    currentProject.value = projectNames[index];
     await retrieveFromSharedPreferences();
+  }
+
+  addANewProject(String name, String date, int limit) {
+    projectNames.add(name);
+    projectLimit.add(limit);
+    creationDates.add(date);
   }
 
   RxList<dynamic> getListFromIndex() {
