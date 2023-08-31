@@ -60,7 +60,7 @@ class _DownloadPageState extends State<DownloadPage> {
                       3) {
                     downloadManagerController.audioStuff.add(extractedFileName);
                   }
-
+                  await downloadManagerController.saveToSharedPreferences();
                   await firebaseStory.uploadAndDistribute(
                       1, FirebaseAuth.instance.currentUser!.email!, file);
                 }
@@ -71,14 +71,27 @@ class _DownloadPageState extends State<DownloadPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView.separated(
-          itemCount: 5,
-          separatorBuilder: (BuildContext context, int index) => SizedBox(
-            height: 10.h,
+        child: Obx(
+          () => ListView.separated(
+            itemCount: downloadManagerController.getListFromIndex().length,
+            separatorBuilder: (BuildContext context, int index) => SizedBox(
+              height: 10.h,
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                child: DownloadTile(
+                  fileHeader:
+                      downloadManagerController.getListFromIndex()[index],
+                ),
+                onTap: () async {
+                  await firebaseStory.downloadFile(
+                      fileName:
+                          downloadManagerController.getListFromIndex()[index],
+                      email: FirebaseAuth.instance.currentUser!.email!);
+                },
+              );
+            },
           ),
-          itemBuilder: (BuildContext context, int index) {
-            return DownloadTile(fileHeader: "File Name");
-          },
         ),
       ),
     );

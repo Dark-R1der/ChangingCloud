@@ -11,10 +11,10 @@ class DownloadManagerController extends GetxController {
 
   var individualSizes = [0, 0, 0, 0].obs;
 
-  var documentStuff = [];
-  var imagesStuff = [];
-  var videosStuff = [];
-  var audioStuff = [];
+  var documentStuff = [].obs;
+  var imagesStuff = [].obs;
+  var videosStuff = [].obs;
+  var audioStuff = [].obs;
 
   var currentIndex = 0.obs;
   var currentFiles = 0.obs;
@@ -22,6 +22,8 @@ class DownloadManagerController extends GetxController {
   var currentOccupied = 0.obs;
 
   var currentProject = "".obs;
+
+  var projectNames = [].obs;
 
   saveToSharedPreferences() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -36,6 +38,8 @@ class DownloadManagerController extends GetxController {
     await prefs.setStringList("$currentProject.indSizes",
         individualSizes.map((int item) => item.toString()).toList());
     await prefs.setInt('$currentProject.currentFiles', currentFiles.value);
+    await prefs.setStringList('projectsList',
+        projectNames.map((dynamic item) => item.toString()).toList());
     await prefs.setInt(
         '$currentProject.currentOccupied', currentOccupied.value);
   }
@@ -44,10 +48,12 @@ class DownloadManagerController extends GetxController {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // Retrieve the string lists
-    documentStuff = prefs.getStringList("$currentProject.documents") ?? [];
-    imagesStuff = prefs.getStringList("$currentProject.images") ?? [];
-    videosStuff = prefs.getStringList("$currentProject.videos") ?? [];
-    audioStuff = prefs.getStringList("$currentProject.audio") ?? [];
+    documentStuff.value =
+        prefs.getStringList("$currentProject.documents") ?? [];
+    imagesStuff.value = prefs.getStringList("$currentProject.images") ?? [];
+    videosStuff.value = prefs.getStringList("$currentProject.videos") ?? [];
+    audioStuff.value = prefs.getStringList("$currentProject.audio") ?? [];
+    projectNames.value = prefs.getStringList("projectsList") ?? [];
     individualSizes.value = prefs
             .getStringList("$currentProject.indSizes")
             ?.map((item) => int.parse(item))
@@ -64,5 +70,17 @@ class DownloadManagerController extends GetxController {
     await saveToSharedPreferences();
     currentProject.value = name;
     await retrieveFromSharedPreferences();
+  }
+
+  RxList<dynamic> getListFromIndex() {
+    if (currentIndex.value == 0) {
+      return documentStuff;
+    } else if (currentIndex.value == 1) {
+      return imagesStuff;
+    } else if (currentIndex.value == 2) {
+      return audioStuff;
+    } else {
+      return videosStuff;
+    }
   }
 }
