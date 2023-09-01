@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get.dart';
 import 'package:newiet/auth.dart';
+import 'package:newiet/firestorestuff.dart';
 import 'package:newiet/views/ui/controller/download_manager_controller.dart';
 import 'package:newiet/views/ui/controller/overview_controller.dart';
 import 'package:newiet/views/ui/pages/downloadPage.dart';
@@ -25,20 +26,18 @@ class _OverViewState extends State<OverView> {
     await Auth().signOut();
   }
 
+  FirestoreStory firestoreStory = Get.find<FirestoreStory>();
+  DownloadManagerController _downloadManagerController =
+      Get.put(DownloadManagerController());
   Widget _signOutButton() {
     return ElevatedButton(onPressed: signOut, child: const Text("SignOut"));
   }
 
   List<String> fileHeader = [
-    "Files",
-    "Documents",
-    "Images",
-    "Hello",
-    "Videos",
     "Audio",
     "Video",
     "Image",
-    "Document",
+    "Documents",
   ];
   List<Color> _getGradientColors() {
     List<Color> colors = [];
@@ -153,7 +152,8 @@ class _OverViewState extends State<OverView> {
             ElevatedButton(
               onPressed: () {
                 if (newName.length >= 3 && newValue >= 3) {
-                  _overViewController.addDataItem(newName, newValue, newDate);
+                  _downloadManagerController.addANewProject(
+                      newName, newDate.toString(), newValue.toInt());
                   Navigator.of(context).pop();
                 }
               },
@@ -166,7 +166,7 @@ class _OverViewState extends State<OverView> {
   }
 
   Random random = new Random();
-
+  // int index = ;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -208,113 +208,123 @@ class _OverViewState extends State<OverView> {
             // SizedBox(
             //   height: 15,
             // ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                width: double.infinity,
-                height: 135,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: const Color.fromARGB(255, 55, 167, 165),
-                ),
-                child: Row(
-                  children: [
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    MultiColorCircularProgressIndicator(
-                      radius: 50.0,
-                      lineWidth: 13.0,
-                      colors: [
-                        const Color.fromARGB(255, 233, 92, 106),
-                        const Color.fromARGB(255, 252, 188, 111),
-                        const Color(0xFF1C536B),
-                      ],
-                      colorStops: [
-                        0.0,
-                        0.90,
-                        1.6,
-                        2.5,
-                      ], // Adjust stops as needed
-                      percent: 0.3,
-                      centerText: "76%",
-                      textSize:
-                          20.0, // Adjust this value dynamically based on your file size
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        const Text(
-                          "Sample Project 1!",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            fontSize: 20,
+            Obx(() {
+              // print("${_downloadManagerController.documentStuff.value}");
+              return Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  width: double.infinity,
+                  height: 135,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: const Color.fromARGB(255, 55, 167, 165),
+                  ),
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      MultiColorCircularProgressIndicator(
+                        radius: 50.0,
+                        lineWidth: 13.0,
+                        colors: [
+                          const Color.fromARGB(255, 233, 92, 106),
+                          const Color.fromARGB(255, 252, 188, 111),
+                          const Color(0xFF1C536B),
+                        ],
+                        colorStops: [
+                          0.0,
+                          0.2,
+                          0.3,
+                          0.4,
+                        ], // Adjust stops as needed
+                        percent: 1,
+                        centerText: "21%",
+                        textSize:
+                            20.0, // Adjust this value dynamically based on your file size
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Text(
-                          "73 GB of 100 GB used",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          height: 20,
-                          width: 213,
-                          child: ListView.separated(
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                              width: 10,
+                          Text(
+                            (_downloadManagerController.projectNames.isEmpty)
+                                ? "Add Project"
+                                : _downloadManagerController.projectNames[
+                                    _downloadManagerController
+                                        .projectIndex.value],
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                              fontSize: 20,
                             ),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 3,
-                            itemBuilder: (context, index) {
-                              return Row(
-                                children: [
-                                  Container(
-                                    height: 10,
-                                    width: 10,
-                                    decoration: BoxDecoration(
-                                        color: colorsArc[index],
-                                        borderRadius: BorderRadius.circular(5)),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    fileHeader[index],
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
                           ),
-                        )
-                      ],
-                    )
-                  ],
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            _downloadManagerController.projectLimit.isEmpty
+                                ? "null"
+                                : "21 KB of ${_downloadManagerController.projectLimit[_downloadManagerController.projectIndex.value]} KB used",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            height: 20,
+                            width: 213,
+                            child: ListView.separated(
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                width: 10,
+                              ),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 3,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                  children: [
+                                    Container(
+                                      height: 10,
+                                      width: 10,
+                                      decoration: BoxDecoration(
+                                          color: colorsArc[index],
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      fileHeader[index],
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
             const SizedBox(
               height: 10,
             ),
@@ -368,9 +378,10 @@ class _OverViewState extends State<OverView> {
                     width: 15,
                   ),
                   scrollDirection: Axis.horizontal,
-                  itemCount: _overViewController.dataList.length + 1,
+                  itemCount: _downloadManagerController.projectNames.length + 1,
                   itemBuilder: (BuildContext context, int index) {
-                    return (_overViewController.dataList.length == index)
+                    return (_downloadManagerController.projectNames.length ==
+                            index)
                         ? GestureDetector(
                             onTap: () {
                               _showAddDialog(context);
@@ -387,68 +398,76 @@ class _OverViewState extends State<OverView> {
                               child: Icon(Icons.add, size: 30),
                             ),
                           )
-                        : Container(
-                            width: 138,
-                            height: 100,
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              // border: Border.all(),
-                              color: colorsProject[index],
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  _overViewController.dataList[index].name,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        const Color.fromARGB(255, 37, 37, 37),
-                                    fontSize: 14.sp,
-                                  ),
-                                  softWrap: true,
-                                ),
-                                const SizedBox(
-                                  height: 17,
-                                ),
-                                MultiColorCircularProgressIndicator(
-                                    radius: 30.0,
-                                    lineWidth: 8.0,
-                                    colors: [
-                                      const Color.fromARGB(255, 233, 92, 106),
-                                      const Color.fromARGB(255, 252, 188, 111),
-                                      const Color(0xFF1C536B),
-                                    ],
-                                    colorStops: [
-                                      0.0 * random.nextDouble(),
-                                      0.90 * random.nextDouble(),
-                                      1.6 * random.nextDouble(),
-                                      2.5 * random.nextDouble(),
-                                    ], // Adjust stops as needed
-                                    percent: 0.3,
-                                    centerText:
-                                        "${(random.nextDouble() * 100).floor()}%",
-                                    textSize:
-                                        14 // Adjust this value dynamically based on your file size
+                        : GestureDetector(
+                            onTap: null,
+                            // _downloadManagerController.changeIndex(index),
+                            child: Container(
+                              width: 138,
+                              height: 100,
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                // border: Border.all(),
+                                color: colorsProject[index],
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    _downloadManagerController
+                                        .projectNames[index],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          const Color.fromARGB(255, 37, 37, 37),
+                                      fontSize: 14.sp,
                                     ),
-                                const SizedBox(
-                                  height: 14,
-                                ),
-                                Text(
-                                  "17/08/2023",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        const Color.fromARGB(255, 37, 37, 37),
-                                    fontSize: 12.sp,
+                                    softWrap: true,
                                   ),
-                                  softWrap: true,
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
+                                  const SizedBox(
+                                    height: 17,
+                                  ),
+                                  MultiColorCircularProgressIndicator(
+                                      radius: 30.0,
+                                      lineWidth: 8.0,
+                                      colors: [
+                                        const Color.fromARGB(255, 233, 92, 106),
+                                        const Color.fromARGB(
+                                            255, 252, 188, 111),
+                                        const Color(0xFF1C536B),
+                                      ],
+                                      colorStops: [
+                                        0.0 * random.nextDouble(),
+                                        0.90 * random.nextDouble(),
+                                        1.6 * random.nextDouble(),
+                                        2.5 * random.nextDouble(),
+                                      ], // Adjust stops as needed
+                                      percent: 0.3,
+                                      centerText:
+                                          "${(random.nextDouble() * 100).floor()}%",
+                                      textSize:
+                                          14 // Adjust this value dynamically based on your file size
+                                      ),
+                                  const SizedBox(
+                                    height: 14,
+                                  ),
+                                  Text(
+                                    _downloadManagerController
+                                        .creationDates[index]
+                                        .substring(0, 10),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          const Color.fromARGB(255, 37, 37, 37),
+                                      fontSize: 12.sp,
+                                    ),
+                                    softWrap: true,
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                   },
