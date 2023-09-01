@@ -22,11 +22,13 @@ class Auth {
     required String email,
     required String password,
     required String role,
+    String name = "",
   }) async {
     await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
+    _firebaseAuth.currentUser!.updateDisplayName(name);
     await _firebaseFirestore
         .collection('/users')
         .doc(email)

@@ -7,16 +7,15 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
+import 'package:newiet/views/ui/controller/node_global_stuff.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 
-import 'views/ui/controller/setting_controller.dart';
-
 class FirestoreStory extends GetxController {
   var filearray = [].obs;
-  var SettingsController = Get.find<SettingController>();
+  var nodeGlobal = Get.find<NodeGlobalStuff>();
   Future<List<String>> uploadFileToStorage(File file) async {
     final storageRef = firebase_storage.FirebaseStorage.instance.ref();
 
@@ -107,6 +106,8 @@ class FirestoreStory extends GetxController {
           await file.writeAsBytes(fileData!.toList());
 
           filearray.add(file);
+          nodeGlobal.currentFiles.value += 1;
+          nodeGlobal.currentSize.value += file.lengthSync();
           OpenFile.open(localFilePath);
 
           // Save the downloaded file, you can save it to local storage or process it as needed.
