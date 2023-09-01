@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:newiet/auth.dart';
 import 'package:newiet/views/ui/controller/page_controller.dart';
 import 'package:newiet/views/ui/controller/setting_controller.dart';
+import 'package:newiet/views/ui/controller/sign_up_controller.dart';
+import 'package:newiet/views/ui/pages/nodePage.dart';
 import 'package:newiet/views/ui/pages/overview_page.dart';
 import 'package:newiet/views/ui/pages/setting_page.dart';
 import 'package:newiet/views/widgetsd/buttom_nav_button.dart';
@@ -23,6 +25,7 @@ class _HomePageState extends State<HomePage> {
 
   final PageControl pageControl = Get.put(PageControl());
   final SettingController settingController = Get.put(SettingController());
+  final SignUpController _signUpController = Get.put(SignUpController());
   var firebaseStory = Get.put(FirestoreStory());
   Future<void> signOut() async {
     await Auth().signOut();
@@ -115,7 +118,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFFE2E2E2),
-        body: pages[pageIndex],
+        body: _signUpController.dropdownValue.value == "Node"
+            ? NodePage()
+            : pages[pageIndex],
         bottomNavigationBar: buildMyNavBar(context));
   }
 }
