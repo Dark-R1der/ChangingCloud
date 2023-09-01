@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
 import 'package:newiet/auth.dart';
 import 'package:newiet/authentication.dart';
+import 'package:newiet/views/ui/controller/node_global_stuff.dart';
 import 'package:newiet/views/ui/pages/home.dart';
 import 'firebase_options.dart';
 import 'package:flutter_test/flutter_test.dart'; // Import necessary testing package
@@ -17,12 +19,12 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FlutterDownloader.initialize();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  MyApp({Key? key}) : super(key: key);
+  final NodeGlobalStuff nodeGlobalStuff = Get.put(NodeGlobalStuff());
   @override
   Widget build(BuildContext context) {
     //Set the fit size (Find your UI design, look at the dimensions of the device screen and fill it in,unit in dp)

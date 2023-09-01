@@ -24,10 +24,10 @@ class _SignUpState extends State<SignUp> {
   Future<void> createUserWithEmailAndPassword() async {
     try {
       await Auth().createUserWithEmailandPassword(
-        email: _controllerEmail.text,
-        password: _controllerPassword.text,
-        role: signUpController.dropdownValue.value,
-      );
+          email: _controllerEmail.text,
+          password: _controllerPassword.text,
+          role: signUpController.dropdownValue.value,
+          name: _controllerName.text);
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;

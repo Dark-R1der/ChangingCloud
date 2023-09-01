@@ -11,6 +11,8 @@ import 'package:newiet/views/ui/controller/download_manager_controller.dart';
 import 'package:newiet/views/widgetsd/download_tile.dart';
 import 'package:newiet/views/widgetsd/file_tile.dart';
 
+import '../controller/setting_controller.dart';
+
 class DownloadPage extends StatefulWidget {
   DownloadPage({super.key, required this.title});
   String title;
@@ -21,6 +23,7 @@ class DownloadPage extends StatefulWidget {
 class _DownloadPageState extends State<DownloadPage> {
   var firebaseStory = Get.find<FirestoreStory>();
   var downloadManagerController = Get.find<DownloadManagerController>();
+  var SettingsController = Get.find<SettingController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,16 +35,24 @@ class _DownloadPageState extends State<DownloadPage> {
             child: IconButton(
               icon: Icon(Icons.cloud_upload_rounded),
               onPressed: () async {
+                if (SettingsController.currentLimit.value <=
+                        SettingsController.currentFiles.value ||
+                    SettingsController.fileLimit.value <=
+                        SettingsController.currentLimit.value) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('File Limts Reached')));
+                  return;
+                }
                 FilePickerResult? result =
                     await FilePicker.platform.pickFiles();
                 if (result != null) {
                   File file = File(result.files.single.path!);
-                  downloadManagerController.currentOccupied.value +=
-                      file.lengthSync();
+                  SettingsController.currentLimit.value += file.lengthSync();
                   downloadManagerController.individualSizes[
                           downloadManagerController.currentIndex.value] +=
                       file.lengthSync();
-                  downloadManagerController.currentFiles.value += 1;
+                  SettingsController.currentFiles.value += 1;
+                  SettingsController.saveToSharedPreferences();
                   final filePath = file.path;
                   final List<String> pathParts = filePath.split('/');
                   final extractedFileName = pathParts.last;
