@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:newiet/auth.dart';
 import 'package:newiet/views/ui/controller/global_controller.dart';
 import 'package:newiet/views/ui/pages/home.dart';
+import 'package:newiet/views/ui/pages/nodePage.dart';
 import 'package:newiet/views/ui/pages/sign_up.dart';
 
 class Authentication extends StatelessWidget {
@@ -32,7 +33,7 @@ class Authentication extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) {
             if (globalController.role.value == "Node") {
-              return HomePage();
+              return NodePage();
             } else if (globalController.role.value == "Organization") {
               return HomePage();
             } else {

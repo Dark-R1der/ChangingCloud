@@ -6,7 +6,6 @@ import 'package:newiet/auth.dart';
 import 'package:newiet/views/ui/controller/page_controller.dart';
 import 'package:newiet/views/ui/controller/setting_controller.dart';
 import 'package:newiet/views/ui/controller/sign_up_controller.dart';
-import 'package:newiet/views/ui/pages/nodePage.dart';
 import 'package:newiet/views/ui/pages/overview_page.dart';
 import 'package:newiet/views/ui/pages/setting_page.dart';
 import 'package:newiet/views/widgetsd/buttom_nav_button.dart';
@@ -118,9 +117,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFFE2E2E2),
-        body: _signUpController.dropdownValue.value == "Node"
-            ? NodePage()
-            : pages[pageIndex],
+        body: pages[pageIndex],
         bottomNavigationBar: buildMyNavBar(context));
   }
 }
