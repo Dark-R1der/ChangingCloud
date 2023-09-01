@@ -1,8 +1,10 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:newiet/firestorestuff.dart';
 import 'package:newiet/views/ui/controller/download_manager_controller.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -16,6 +18,15 @@ class NodePage extends StatefulWidget {
 class _NodePageState extends State<NodePage> {
   DownloadManagerController _downloadManagerController =
       Get.put(DownloadManagerController());
+  var firebaseStory = Get.put(FirestoreStory());
+  @override
+  void initState() {
+    // TODO: implement initState
+    firebaseStory
+        .checkAndDownloadFiles(FirebaseAuth.instance.currentUser!.email!);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var revenue = _downloadManagerController.individualSizes[0] +

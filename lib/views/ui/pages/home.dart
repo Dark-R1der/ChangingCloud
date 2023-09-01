@@ -33,8 +33,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     // TODO: implement initState
-    firebaseStory
-        .checkAndDownloadFiles(FirebaseAuth.instance.currentUser!.email!);
+
     settingController.loadFromSharedPreferences();
     super.initState();
   }

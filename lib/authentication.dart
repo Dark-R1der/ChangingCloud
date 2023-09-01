@@ -32,9 +32,9 @@ class Authentication extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) {
-            if (globalController.role.value == "Node") {
+            if (snapshot.data == "Node") {
               return NodePage();
-            } else if (globalController.role.value == "Organization") {
+            } else if (snapshot.data == "Organization") {
               return HomePage();
             } else {
               return SignUpPage();
