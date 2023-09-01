@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:newiet/auth.dart';
 import 'package:newiet/views/ui/controller/page_controller.dart';
+import 'package:newiet/views/ui/controller/setting_controller.dart';
 import 'package:newiet/views/ui/pages/overview_page.dart';
 import 'package:newiet/views/ui/pages/setting_page.dart';
 import 'package:newiet/views/widgetsd/buttom_nav_button.dart';
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   final User? user = Auth().currentUser;
 
   final PageControl pageControl = Get.put(PageControl());
+  final SettingController settingController = Get.put(SettingController());
   var firebaseStory = Get.put(FirestoreStory());
   Future<void> signOut() async {
     await Auth().signOut();
@@ -31,7 +33,7 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     firebaseStory
         .checkAndDownloadFiles(FirebaseAuth.instance.currentUser!.email!);
-
+    settingController.loadFromSharedPreferences();
     super.initState();
   }
 

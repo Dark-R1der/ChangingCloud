@@ -17,7 +17,6 @@ class DownloadManagerController extends GetxController {
   var audioStuff = [].obs;
 
   var currentIndex = 0.obs;
-  var currentFiles = 0.obs;
 
   var currentOccupied = 0.obs;
 
@@ -43,7 +42,7 @@ class DownloadManagerController extends GetxController {
         individualSizes.map((int item) => item.toString()).toList());
     await prefs.setStringList("projectLimits",
         projectLimit.map((dynamic item) => item.toString()).toList());
-    await prefs.setInt('$currentProject.currentFiles', currentFiles.value);
+
     await prefs.setStringList('projectsList',
         projectNames.map((dynamic item) => item.toString()).toList());
     await prefs.setStringList('creationDates',
@@ -76,7 +75,7 @@ class DownloadManagerController extends GetxController {
         [];
 
     // Retrieve the integers
-    currentFiles.value = prefs.getInt('$currentProject.currentFiles') ?? 0;
+
     currentOccupied.value =
         prefs.getInt('$currentProject.currentOccupied') ?? 0;
   }

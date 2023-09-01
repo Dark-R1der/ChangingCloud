@@ -12,8 +12,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 
+import 'views/ui/controller/setting_controller.dart';
+
 class FirestoreStory extends GetxController {
   var filearray = [].obs;
+  var SettingsController = Get.find<SettingController>();
   Future<List<String>> uploadFileToStorage(File file) async {
     final storageRef = firebase_storage.FirebaseStorage.instance.ref();
 

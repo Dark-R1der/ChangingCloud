@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:newiet/views/ui/controller/setting_controller.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class SettingPage extends StatelessWidget {
@@ -13,13 +15,15 @@ class SettingPage extends StatelessWidget {
     const Color(0xFFb56576),
   ];
 
+  var settingController = Get.find<SettingController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text("Setting",
+        title: Text("Settings",
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -33,7 +37,7 @@ class SettingPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "User Setting",
+              "User Settings",
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
@@ -42,9 +46,39 @@ class SettingPage extends StatelessWidget {
             SizedBox(
               height: 10.h,
             ),
-            SettingTiles(title: "Max Number of files"),
-            SettingTiles(title: "BandWidth (in GB)"),
-            SettingTiles(title: "Budget"),
+            Row(
+              children: [
+                Image.asset(
+                  "assets/moneybag.png",
+                  height: 150,
+                  width: 150,
+                ),
+                Text(
+                  (settingController.currentLimit.value * 0.002).toString() +
+                      "/mon",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 40,
+                  ),
+                )
+              ],
+            ),
+            SettingTiles(
+                title: "Max Number of files",
+                value: settingController.fileLimit),
+            SettingTiles(
+              title: "BandWidth (in GB)",
+              value: settingController.bandwidth,
+            ),
+            SettingTiles(
+              title: "Budget",
+              value: settingController.budget,
+            ),
+            SettingTiles(
+              title: "File Size Limit (in KB)",
+              value: settingController.fileSizeLimit,
+            ),
             SizedBox(
               height: 10.h,
             ),
@@ -58,7 +92,10 @@ class SettingPage extends StatelessWidget {
             SizedBox(
               height: 10.h,
             ),
-            SettingTiles(title: "Number of peers"),
+            SettingTiles(
+              title: "Number of peers",
+              value: settingController.peers,
+            ),
           ],
         ),
       ),
@@ -67,8 +104,9 @@ class SettingPage extends StatelessWidget {
 }
 
 class SettingTiles extends StatelessWidget {
-  SettingTiles({super.key, required this.title});
+  SettingTiles({super.key, required this.title, required this.value});
   String title;
+  RxInt value;
 
   @override
   Widget build(BuildContext context) {
@@ -101,15 +139,17 @@ class SettingTiles extends StatelessWidget {
                   topLeft: Radius.circular(12),
                   bottomLeft: Radius.circular(12),
                 ),
-                onTap: () {},
+                onTap: () {
+                  value.value -= 1;
+                },
               ),
               Container(
                 width: 60,
                 height: 32,
                 alignment: Alignment.center,
                 color: Colors.grey.shade200,
-                child: const Text(
-                  "02",
+                child: Text(
+                  value.value.toString(),
                 ),
               ),
               HalfRoundButton(
@@ -118,7 +158,9 @@ class SettingTiles extends StatelessWidget {
                   topRight: Radius.circular(12),
                   bottomRight: Radius.circular(12),
                 ),
-                onTap: () {},
+                onTap: () {
+                  value.value += 1;
+                },
               )
             ],
           ),
