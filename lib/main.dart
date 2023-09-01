@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:newiet/auth.dart';
 import 'package:newiet/authentication.dart';
+import 'package:newiet/views/ui/controller/global_controller.dart';
 import 'package:newiet/views/ui/controller/node_global_stuff.dart';
 import 'package:newiet/views/ui/pages/home.dart';
 import 'firebase_options.dart';
@@ -25,6 +26,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
   final NodeGlobalStuff nodeGlobalStuff = Get.put(NodeGlobalStuff());
+  final GlobalController globalController = Get.put(GlobalController());
   @override
   Widget build(BuildContext context) {
     //Set the fit size (Find your UI design, look at the dimensions of the device screen and fill it in,unit in dp)
